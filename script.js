@@ -1,5 +1,3 @@
-
-
 window.addEventListener('DOMContentLoaded', () => {
   'use strict';
       let timerHours = document.querySelector('#timer-hours'),
@@ -346,98 +344,110 @@ const calculator = (price = 100) =>{
   getstartSlider(3000);
  
 
-//ajax- json
+  //ajax- json
 
-  const sendForm = () => {
-      const errorMessage = 'Что-то пошло не так...',
-      loadMessage = 'Загрузка...',
-      successMessage = 'Спасибо!Мы скоро свяжимся с вами! ',
-      fixMessage = 'ПЕРЕДЕЛАЙ!';
-      
-
-      const form = document.querySelectorAll('form'),
-            input = document.querySelectorAll('input'),
-            
-            usephone1 = document.getElementById('form1-phone'),
-            usephone2 = document.getElementById('form2-phone'),
-            usephone3 = document.getElementById('form3-phone'),
-
-            name1 = document.getElementById('form1-name'),
-            name2 = document.getElementById('form2-name'),
-            name3 = document.getElementById('form3-name'),
-            message = document.getElementById('form2-message');
-
-      const startMessage = document.createElement('div');
-      startMessage.style.cssText = 'font-size: 2rem;';
-
-const post = (body, out, err) =>{
+const sendForm = () => {
+  const errorMessage = 'Что-то пошло не так...',
+  loadMessage = 'Загрузка...',
+  successMessage = 'Спасибо!Мы скоро свяжимся с вами! ',
+  fixMessage = 'ПЕРЕДЕЛАЙ!';
+  
+  
+  const form = document.querySelectorAll('form'),
+  input = document.querySelectorAll('input'),
+  
+  usephone1 = document.getElementById('form1-phone'),
+  usephone2 = document.getElementById('form2-phone'),
+  usephone3 = document.getElementById('form3-phone'),
+  
+  name1 = document.getElementById('form1-name'),
+  name2 = document.getElementById('form2-name'),
+  name3 = document.getElementById('form3-name'),
+  message = document.getElementById('form2-message');
+  
+  const startMessage = document.createElement('div');
+  startMessage.style.cssText = 'font-size: 2rem;';
+  
+  const post = (body ) =>{
+      return new Promise( (resolve, reject) => {
         const request = new XMLHttpRequest();
-      request.addEventListener('readystatechange', ()=> {
+
+        request.addEventListener('readystatechange', ()=> {
         startMessage.textContent = loadMessage;
-          if(request.readyState !== 4){
-            return;
-          }
-          if(request.status === 200){
-           out();
-            } else {
-              err();
-          }
-          
-        });
-        request.open('POST', './server.php');
-        request.setRequestHeader('Content-Type','application/json');
-        request.send(JSON.stringify(body));
-      };
 
-      form.forEach((elem) =>{
+        if(request.readyState !== 4){
+          return;
+           }
+        if(request.status === 200 ){
+              resolve();
+        } else {
+          reject(request.status);
+          }
+  
+    });
+  request.open('POST', './server.php');
+  request.setRequestHeader('Content-Type','application/json');
+  request.send(JSON.stringify(body));
+  });
+  };
+  
+  
+   form.forEach((elem) =>{
         elem.addEventListener('submit', (event) => {
-
-          event.preventDefault();
-          elem.appendChild(startMessage);
-
-
+  
+        event.preventDefault();
+        elem.appendChild(startMessage);
+  
+  
         const formData = new FormData(elem);
         let body = {};
         formData.forEach((val,key) =>{
-          body[key] = val;
+        body[key] = val;
         });
-
+  
         const cheak = () =>{
-          input.forEach( (item) => {
-            if(item.tagName.toLowerCase() === 'input') {
-                item.value = '';
+        input.forEach( (item) => {
+        if(item.tagName.toLowerCase() === 'input') {
+            item.value = '';
         }
-      });
-    };
-    const fixPhone = (num) =>  {
-      const phone = /^[+]?\d+$/;
-      return !!(num && num.match(phone));
-    };
+          });
+          };
+        const fixPhone = (num) => {
+            const phone = /^[+]?\d+$/;
+            return !!(num && num.match(phone));
+            };
+        
+        const fixText = (text) => {
+          const messag = /[^a-zа-я\s]+$/;
+        return !!(text && text.match(messag));
+        };
 
-    const fixText = (text) =>  {
-      const messag = /[^a-zа-я\s]+$/;
-      return !!(text && text.match(messag));
-    };
-
-  
-  
-      if(fixPhone(usephone1.value) || fixPhone(usephone2.value) || fixPhone(usephone3.value) ||
-        fixText(name1.value) ||  fixText(name2.value) ||  fixText(name3.value) ||  fixText(message.value)){
-      post(body, ()=>{
+        if(fixPhone(usephone1.value) || fixPhone(usephone2.value) || fixPhone(usephone3.value) ||
+          fixText(name1.value) || fixText(name2.value) || fixText(name3.value) || fixText(message.value)){
+            post(body)
+          .then(() => {
         startMessage.textContent = successMessage;
-       
-      },(error)=>{
+          cheak();
+        })
+          .catch((error) => {
         startMessage.textContent = errorMessage;
-        console.error(error);
-       });
-       cheak();
-      }else {
-        startMessage.textContent = fixMessage;
-      }   cheak();
+          console.error(error);
+          cheak();
+        });
+      }else{
+        post(body)
+        .then(() => {
+          startMessage.textContent = fixMessage;
+            cheak();
+      });
+    }
+  
+  
+  
   });
   });
-};
-
+  };
+  
   sendForm();
 
 
