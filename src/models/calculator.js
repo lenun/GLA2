@@ -1,4 +1,3 @@
-
 const calculator = (price = 100) =>{
     const   calcBlock = document.querySelector('.calc-block'),
             calcType = document.querySelector('.calc-type'),
@@ -6,6 +5,35 @@ const calculator = (price = 100) =>{
             calcCount = document.querySelector('.calc-count'),
             calcDay = document.querySelector('.calc-day'),
             totalValue = document.getElementById('total');
+            const animation = (target, index) => {
+              const anim = {
+                  id: -1,
+                  progress: +target.textContent,
+                  timeL: 3000, 
+                  count: true 
+              };
+            
+              if (target.textContent > index) {
+                  anim.count = false;
+              }
+            
+              const start = performance.now();
+              anim.id = requestAnimationFrame(function animate(event) {
+                  if (event - start > anim.timeL) {
+                      return cancelAnimationFrame(anim.id);
+                  }
+                  let time = Math.ceil((event- start) % anim.timeL);
+            
+                  anim.progress = anim.progress + (anim.count ? time : -time);
+                  target.textContent = anim.progress;
+            
+                  if ((anim.count && anim.progress >= index) || (!anim.count && anim.progress <= index)) {
+                      cancelAnimationFrame(anim.id);
+                  } else {
+                      anim.id = requestAnimationFrame(animate);
+                  }
+              });
+            };
   
       const countSum = () => {
           let total = 0,
@@ -25,7 +53,7 @@ const calculator = (price = 100) =>{
   
           if (tyleValue && squareValue){
             total = price *  tyleValue * squareValue * countValue * dayValue;
-    
+            animation(totalValue,total);
            
           }
           totalValue.textContent = total;

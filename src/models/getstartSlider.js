@@ -96,6 +96,6 @@ const getstartSlider = () => {
               startSlide();
             }
           });
+          startSlide(2000);
         };
-
-        export default getstartSlider;
+    export default getstartSlider;

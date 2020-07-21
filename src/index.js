@@ -1,7 +1,6 @@
 'use strict';
 
-
-import getTime from './models/getTime';
+import getTimer from './models/getTimer';
 import toggleMenu from './models/toggleMenu';
 import togglePopup from './models/togglePopup';
 import tabs from './models/tabs';
@@ -11,7 +10,7 @@ import calculator from './models/calculator';
 import sendForm from './models/sendForm';
 
 //таймер
-getTime();
+getTimer();
 //меню
 toggleMenu();
 //попит
@@ -19,10 +18,10 @@ togglePopup();
 //табы
 tabs();
 //слайдер
-getstartSlider(3000);
+getstartSlider();
 //наша команда
 getCommand();
 //калькулятор 
-calculator(100);   
+calculator();   
 //ajax- json
-  sendForm();
+sendForm();

@@ -1,3 +1,4 @@
+
 const sendForm = () => {
     const errorMessage = 'Что-то пошло не так...',
     loadMessage = 'Загрузка...',
@@ -87,4 +88,4 @@ const sendForm = () => {
     });
     });
     };
-    export default sendForm;  
+    export default sendForm;

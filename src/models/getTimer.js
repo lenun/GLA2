@@ -1,7 +1,7 @@
-const getTime = (deadline) => {
+const getTimer = (deadline) =>{
     let timerHours = document.querySelector('#timer-hours'),
-        timerMinutes = document.querySelector('#timer-minutes'),
-        timerSeconds = document.querySelector('#timer-seconds');
+    timerMinutes = document.querySelector('#timer-minutes'),
+    timerSeconds = document.querySelector('#timer-seconds');
   
     function getTimeRemaing(deadline){
         let dataStop = new Date(deadline).getTime(),
@@ -27,6 +27,6 @@ const getTime = (deadline) => {
         timerSeconds.textContent = '00';
     }
     }
-    setInterval(updateClock, 1000, '25 jul 2020');
+    setInterval(updateClock, 1000, '30 jul 2020');
   }
-  export default getTime;
+  export default getTimer;
